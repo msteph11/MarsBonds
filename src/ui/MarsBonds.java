@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 import javafx.scene.Group;
 import model.Molecule;
 
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * Represents the window in which the molecule drawing editor appears.
  * Run the main method to start the program!
@@ -20,7 +23,7 @@ public class MarsBonds extends Application {
     private static final int CAM_ORG_DISTANCE = -50;
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 800;
-    private static final Color SCENE_COLOR = Color.BLACK;
+    private static final Color SCENE_COLOR = Color.WHITE;
     private static final int CAM_SPEED = 30;
 
     private static Stage primaryStage;
