@@ -1,24 +1,25 @@
 package model;
 
-import java.awt.*;
+import javafx.scene.shape.Box;
+import javafx.scene.shape.Sphere;
+
 import java.util.ArrayList;
 
 /**
  * Represents a molecule
  * @author Maria Stephenson
  */
-public class Molecule {
+public class Molecule extends Sphere{
+    private final static int radius = 20;
+
     private Hybridization hybridization;
     private ArrayList<Bond> bonds;
-    private Color color;
-
     /**
-     * Constructor: gives molecule default hybridization (sp3), default colour
-     * (red), and an empty list of bonds
+     * Constructor: gives molecule default hybridization (sp3) and an empty list of bonds
      */
     public Molecule() {
+        super(radius);
         hybridization = Hybridization.SP3;
-        color = Color.red;
         bonds = new ArrayList<>();
     }
 
@@ -35,13 +36,5 @@ public class Molecule {
      */
     public ArrayList<Bond> getBonds() {
         return bonds;
-    }
-
-    /**
-     * Getter
-     * @return Molecule's color
-     */
-    public Color getColor() {
-        return color;
     }
 }
