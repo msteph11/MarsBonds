@@ -1,24 +1,25 @@
 package model;
 
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
-import javafx.scene.input.KeyEvent;
+import observers.ApplicationObserver;
+
 import java.util.ArrayList;
 
 /**
  * Represents a molecule
  * @author Maria Stephenson
  */
-public class Molecule extends Sphere{
+public class Molecule extends Sphere implements ApplicationObserver {
     private final static int radius = 20;
 
     private Hybridization hybridization;
     private ArrayList<Bond> bonds;
     private PhongMaterial material;
     private boolean selected;
+    private MoleculeColor color;
 
     /**
      * Constructor: gives molecule default hybridization (sp3), a default color (red),
@@ -30,7 +31,8 @@ public class Molecule extends Sphere{
         hybridization = Hybridization.SP3;
         bonds = new ArrayList<>();
         selected = false;
-        material = new PhongMaterial(new Color(0, 1, 1,1).darker());
+        color = MoleculeColor.TEAL;
+        material = new PhongMaterial(color.getColor().darker());
         setMaterial(material);
         addEventHandlers();
     }
@@ -77,5 +79,17 @@ public class Molecule extends Sphere{
             material.setDiffuseColor(material.getDiffuseColor().darker());
             setMaterial(material);
         });
+    }
+
+    /**
+     * If the molecule is selected, its color is changed
+     */
+    @Override
+    public void update() {
+        if(selected) {
+            color = color.getNextColor();
+            material.setDiffuseColor(color.getColor().brighter());
+            setMaterial(material);
+        }
     }
 }

@@ -9,7 +9,7 @@ import javafx.scene.transform.Transform;
  * @author Maria Stephenson
  */
 public class RotateCamera extends PerspectiveCamera {
-    Transform currTransform;
+    private Transform currTransform;
 
     /**
      * Constructor
