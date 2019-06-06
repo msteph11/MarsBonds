@@ -1,4 +1,4 @@
-package model;
+package model.model_elements;
 
 /**
  * Represents the hybridizations a molecule could have

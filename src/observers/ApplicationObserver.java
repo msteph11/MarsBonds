@@ -10,5 +10,5 @@ public interface ApplicationObserver {
     /**
      * This method is called when the SubjectApplication notifies its observers
      */
-    public void update();
+    void update(String event);
 }

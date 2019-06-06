@@ -1,8 +1,7 @@
 package observers;
 
 import javafx.application.Application;
-
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Represents an application that notifies/maintains a list of
@@ -11,14 +10,14 @@ import java.util.ArrayList;
  */
 public abstract class SubjectApplication extends Application {
 
-    private ArrayList<ApplicationObserver> observers;
+    private static CopyOnWriteArrayList<ApplicationObserver> observers;
 
     /**
      * Constructor
      * Makes a new SubjectApplication with no observers
      */
     public SubjectApplication() {
-        observers = new ArrayList<>();
+        observers = new CopyOnWriteArrayList<>();
     }
 
     /**
@@ -26,20 +25,19 @@ public abstract class SubjectApplication extends Application {
      * already there)
      * @param o ApplicationObserver to be added
      */
-    public void addObserver(ApplicationObserver o) {
+    public static void addObserver(ApplicationObserver o) {
         if(!observers.contains(o)) {
             observers.add(o);
         }
     }
 
     /**
-     * Notifies observers that something has happened (as of now,
-     * this method is only called when the C key is pressed, but this may
-     * change in future versions)
+     * Notifies observers that something has happened (either C key
+     * is pressed, or B key is pressed)
      */
-    public void notifyObservers() {
+    protected static void notifyObservers(String event) {
         for (ApplicationObserver o : observers) {
-            o.update();
+            o.update(event);
         }
     }
 

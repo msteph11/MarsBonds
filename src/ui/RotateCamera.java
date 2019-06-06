@@ -38,7 +38,7 @@ public class RotateCamera extends PerspectiveCamera {
     }
 
     /**
-     * Applies both the currTransform and given rotation to the camera
+     * Applies the given rotation to the camera
      */
     private void rotateCam(Rotate rotation) {
         currTransform = currTransform.createConcatenation(rotation);

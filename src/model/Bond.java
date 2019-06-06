@@ -1,25 +1,26 @@
 package model;
 
-import java.awt.*;
+import javafx.scene.shape.Cylinder;
 
 /**
  * Represents a bond between two molecules
  * @author Maria Stephenson
  */
-public class Bond {
-    private final static int BOND_LENGTH = 2;
+public class Bond extends Cylinder {
+    public final static int BOND_LENGTH = 30;
+    public final static int RADIUS = 3;
 
-    private final Molecule moleculeOne;
-    private final Molecule moleculeTwo;
-    private Color color;
+    private final Atom atomOne;
+    private final Atom atomTwo;
 
     /**
      * Construcotr: creates a bond between m1 and m2
      * @param m1 molecule participating in the bond
      * @param m2 molecule participating in the bond
      */
-    public Bond(Molecule m1, Molecule m2) {
-        moleculeOne = m1;
-        moleculeTwo = m2;
+    public Bond(Atom m1, Atom m2) {
+        super(RADIUS, BOND_LENGTH);
+        atomOne = m1;
+        atomTwo = m2;
     }
 }
