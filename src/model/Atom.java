@@ -1,12 +1,14 @@
 package model;
 
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import model.model_elements.BondController;
 import model.model_elements.AtomColor;
 import observers.ApplicationObserver;
 import ui.MarsBonds;
+
 
 /**
  * Represents a molecule
@@ -18,10 +20,10 @@ public class Atom extends Sphere implements ApplicationObserver {
     private BondController bondController;
     private PhongMaterial material;
     private boolean selected;
-    private AtomColor color;
+    private Color color;
 
     /**
-     * Constructor: gives molecule default hybridization (sp3), a default color (teal),
+     * Constructor: gives molecule default hybridization (sp3), a default color (red),
      * and a BondController object
      * When mouse hovers over molecule it is selected, otherwise it isn't
      */
@@ -31,8 +33,8 @@ public class Atom extends Sphere implements ApplicationObserver {
         MarsBonds.addObserver(bondController);
         MarsBonds.addObserver(this);
         selected = false;
-        color = AtomColor.TEAL;
-        material = new PhongMaterial(color.getColor().darker());
+        color = AtomColor.COLORS[0];
+        material = new PhongMaterial(color.darker());
         setMaterial(material);
         addEventHandlers();
     }
@@ -44,8 +46,8 @@ public class Atom extends Sphere implements ApplicationObserver {
     @Override
     public void update(String event) {
         if(selected && event.equals(MarsBonds.C)) {
-            color = color.getNextColor();
-            material.setDiffuseColor(color.getColor().brighter());
+            color = AtomColor.getNextColor(color);
+            material.setDiffuseColor(color.brighter());
             setMaterial(material);
         }
     }

@@ -13,7 +13,7 @@ import observers.SubjectApplication;
  * Run the main method to start the program!
  * @author Maria Stephenson
  */
-public class MarsBonds extends SubjectApplication {
+public final class MarsBonds extends SubjectApplication {
 
     private static final int CAM_NEAR_CLIP = 0;
     private static final int CAM_FAR_CLIP = 1000;
