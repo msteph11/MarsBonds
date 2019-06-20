@@ -3,7 +3,7 @@ package model.model_elements;
 import javafx.scene.paint.Color;
 
 /**
- * The colors a molecule can have
+ * The colors an atom can have
  * @author Maria Stephenson
  */
 public final class AtomColor {
@@ -13,8 +13,9 @@ public final class AtomColor {
                                           Color.PURPLE,};
 
     /**
-     * @return The next color a molecule will have if the C key is
+     * @return The next color an atom will have if the C key is
      * pressed and its selected
+     * @param c the color the atom currently has
      */
     public static Color getNextColor(Color c) {
         for(int index = 0; index < COLORS.length - 1; index++) {

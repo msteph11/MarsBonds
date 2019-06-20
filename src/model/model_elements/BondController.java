@@ -3,54 +3,50 @@ package model.model_elements;
 import javafx.scene.Group;
 import model.Atom;
 import model.Bond;
-import observers.ApplicationObserver;
 import ui.MarsBonds;
 
 /**
- * This controls an Atom's bonds by allowing bonds to be added to it when the B key is pressed
+ * This controls an atom's bonds by allowing bonds to be added to it when the B key is pressed
+ * @author Maria Stephenson
  */
-public class BondController implements ApplicationObserver {
+public class BondController {
 
     private Atom atom;
-    private Hybridization hybridization;
+    private int bonds;
 
     /**
      * Contstructor
-     * Makes a new BondController for given atom with the atom's hybridization (by default sp3)
+     * Makes a new BondController for given atom with no bonds to control
      * @param atom The atom whose bonds this BondController controls
      */
     public BondController(Atom atom) {
-        hybridization = Hybridization.SP3;
+        bonds = 0;
         this.atom = atom;
     }
 
 
     /**
-     * If the B key was pressed, the atom is selected, and its hybridization is sp3,
-     * gives the atom another bond
-     * @param event signifies which key was pressed (B or C)
+     * Adds another bond to the atom (if hybridization is sp3 - other hybridizations
+     * are yet to be implemented)
      */
-    @Override
-    public void update(String event) {
-        if (atom.isSelected() && event.equals(MarsBonds.B)) {
-            switch (hybridization) {
-                case SP:
-                    System.out.println("To be implemented");
-                    break;
-                case SP2:
-                    System.out.println("To be implemented");
-                    break;
-                case SP3:
-                    addBondSP3();
-                    break;
-                case SP3D:
-                    System.out.println("To be implemented");
-                    break;
-                case SP3D2:
-                    System.out.println("To be implemented");
-                    break;
+    public void addBond() {
+        switch (atom.getHybridization()) {
+            case SP:
+                System.out.println("To be implemented");
+                break;
+            case SP2:
+                System.out.println("To be implemented");
+                break;
+            case SP3:
+                addBondSP3();
+                break;
+            case SP3D:
+                System.out.println("To be implemented");
+                break;
+            case SP3D2:
+                System.out.println("To be implemented");
+                break;
             }
-        }
     }
 
     /**
@@ -58,7 +54,7 @@ public class BondController implements ApplicationObserver {
      */
     private void addBondSP3() {
         Atom newAtom = new Atom();
-        Bond bond = new Bond(atom, newAtom);
+        Bond bond = new Bond();
         Group group = new Group();
         bond.setTranslateY(atom.getTranslateY() - (Bond.BOND_LENGTH + 5));
         bond.setTranslateX(atom.getTranslateX());
@@ -69,6 +65,7 @@ public class BondController implements ApplicationObserver {
         MarsBonds.addObserver(newAtom);
         group.getChildren().add(bond);
         group.getChildren().add(newAtom);
+        bonds++;
         MarsBonds.addToScene(group);
     }
 }
