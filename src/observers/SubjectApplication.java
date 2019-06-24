@@ -33,7 +33,7 @@ public abstract class SubjectApplication extends Application {
 
     /**
      * Notifies observers that something has happened (either C key
-     * is pressed, or B key is pressed)
+     * is pressed, B key is pressed, mouse is clicked)
      */
     protected static void notifyObservers(String event) {
         for (ApplicationObserver o : observers) {

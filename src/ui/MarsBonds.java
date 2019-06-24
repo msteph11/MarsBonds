@@ -1,14 +1,13 @@
 package ui;
 
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.SubScene;
+import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.Group;
 import model.Atom;
 import observers.SubjectApplication;
 
@@ -19,21 +18,19 @@ import observers.SubjectApplication;
  */
 public final class MarsBonds extends SubjectApplication {
 
-    private static final int CAM_NEAR_CLIP = 0;
-    private static final int CAM_FAR_CLIP = 1000;
-    private static final int CAM_ORG_DISTANCE = 0;
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 800;
-    private static final Color SCENE_COLOR = Color.BLACK;
-    private static final int CAM_SPEED = 30;
+    private static final Color SCENE_COLOR = Color.LIGHTGREY;
+    private static final int CAM_SPEED = 10;
     public static final String C = "C key";
     public static final String B = "B key";
+    public static final String DESELECTED = "deselected";
 
     private static Stage primaryStage;
     private static SubScene scene3D;
     private static Scene scene;
-    private static Group root;
-    private static RotateCamera camera;
+    private static RotateGroup root;
+    private static PerspectiveCamera camera;
     private static Text text;
 
     public static void main( String[] args ) {
@@ -44,7 +41,7 @@ public final class MarsBonds extends SubjectApplication {
         setSubScene();
         setScene();
         setCamera();
-        setPrimaryState(primaryStage);
+        setPrimaryStage(primaryStage);
     }
 
     /**
@@ -55,25 +52,15 @@ public final class MarsBonds extends SubjectApplication {
         root.getChildren().add(group);
     }
 
-    public static void updateTextWithAtomInfo(Atom atom) {
-        text.setText(text.getText() + atom.getHybridization());
-    }
-
-    public static void clearAllText() {
-        text.setText("Hybridization: ");
-    }
-
     /**
-     * Creates sub-scene with molecule in center of screen and black background
+     * Creates sub-scene with molecule in center of screen
      * This sub-scene is where all 3D elements will be placed
      */
     private static void setSubScene() {
         Atom atom = new Atom();
-        atom.translateXProperty().set(WIDTH/2);
-        atom.translateYProperty().set(HEIGHT/2);
-        root = new Group();
+        root = new RotateGroup();
         root.getChildren().add(atom);
-        scene3D = new SubScene(root, WIDTH*3/4, HEIGHT);
+        scene3D = new SubScene(root, WIDTH*3/4, HEIGHT, true, SceneAntialiasing.BALANCED);
         scene3D.setFill(SCENE_COLOR);
     }
 
@@ -92,27 +79,29 @@ public final class MarsBonds extends SubjectApplication {
         text.getStyleClass().add("text");
         text.setText("Hybridization: ");
         panel.getChildren().add(text);
-        scene = new Scene(borderPane);
+        scene = new Scene(borderPane, WIDTH, HEIGHT, true);
         scene.getStylesheets().add("ui/styling/sidePanel.css");
     }
     /**
      * Initializes camera and adds to scene
      */
     private static void setCamera() {
-        camera = new RotateCamera();
-        camera.setNearClip(CAM_NEAR_CLIP);
-        camera.setFarClip(CAM_FAR_CLIP);
-        camera.translateZProperty().set(CAM_ORG_DISTANCE);
+        camera = new PerspectiveCamera();
+        camera.setTranslateX(-WIDTH * 2/5);
+        camera.setTranslateY(-HEIGHT/2);
         scene3D.setCamera(camera);
     }
 
     /**
-     * Sets up the primary stage by setting its scene, title, and adding key control
+     * Sets up the primary stage by setting its scene, title, adding key
+     * and mouse control
      * @param stage the primary stage
      */
-    private static void setPrimaryState(Stage stage) {
+    private static void setPrimaryStage(Stage stage) {
         primaryStage = stage;
-        addEventHandlers();
+        addKeyEventHandler();
+        addMouseEventHandler();
+        addScrollEventHandler();
         primaryStage.setTitle("Mar's Bonds");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -121,36 +110,25 @@ public final class MarsBonds extends SubjectApplication {
     /**
      * Adds KeyEvent handler to primary stage
      * The KeyEvent handler uses input from the WASD keys to rotate
-     * the camera and the arrow keys to move the camera
+     * the molecule
      * If C is pressed and an atom is selected, its color changes
      * If B is pressed and an atom is selected, that atom gets a new bond
+     * Arrow keys move camera along x and y axis
      */
-    private static void addEventHandlers() {
+    private static void addKeyEventHandler() {
         primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
             switch(e.getCode()) {
                 case W:
-                    camera.rotateInX(-1);
+                    root.rotateInX(-1);
                     break;
                 case S:
-                    camera.rotateInX(1);
+                    root.rotateInX(1);
                     break;
                 case A:
-                    camera.rotateInY(1);
+                    root.rotateInZ(-1);
                     break;
                 case D:
-                    camera.rotateInY(-1);
-                    break;
-                case UP:
-                    camera.setTranslateZ(camera.getTranslateZ() + CAM_SPEED);
-                    break;
-                case DOWN:
-                    camera.setTranslateZ(camera.getTranslateZ() - CAM_SPEED);
-                    break;
-                case LEFT:
-                    camera.setTranslateX(camera.getTranslateX() - CAM_SPEED/3);
-                    break;
-                case RIGHT:
-                    camera.setTranslateX(camera.getTranslateX() + CAM_SPEED/3);
+                    root.rotateInZ(1);
                     break;
                 case C:
                     notifyObservers(C);
@@ -158,8 +136,65 @@ public final class MarsBonds extends SubjectApplication {
                 case B:
                     notifyObservers(B);
                     break;
+                case UP:
+                    camera.setTranslateY(camera.getTranslateY() - CAM_SPEED);
+                    break;
+                case DOWN:
+                    camera.setTranslateY(camera.getTranslateY() + CAM_SPEED);
+                    break;
+                case LEFT:
+                    camera.setTranslateX(camera.getTranslateX() - CAM_SPEED);
+                    break;
+                case RIGHT:
+                    camera.setTranslateX(camera.getTranslateX() + CAM_SPEED);
+                    break;
             }
         });
+    }
+
+    /**
+     * Adds MouseEvent handler to primary stage
+     * If an atom is clicked on it is selected and the side panel is
+     * updated with its information. When the side panel/empty space around the
+     * molecule is clicked all atoms are deselected. Only one atom can be selected
+     * at a time.
+     */
+    private static void addMouseEventHandler() {
+        primaryStage.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            Object result = e.getPickResult().getIntersectedNode();
+            notifyObservers(DESELECTED);
+            clearAllText();
+            if (result instanceof Atom) {
+                Atom atomResult = (Atom) result;
+                atomResult.setSelected(true);
+                updateTextWithAtomInfo(atomResult);
+            }
+        });
+    }
+
+    /**
+     * Adds ScrollEvent handler to primary stage
+     * User can scroll to zoom in/out
+     */
+    private static void addScrollEventHandler() {
+        primaryStage.addEventHandler(ScrollEvent.SCROLL, e -> {
+            camera.setTranslateZ(camera.getTranslateZ() + e.getDeltaY());
+        });
+    }
+
+    /**
+     * Erases any atom information from side panel
+     */
+    private static void clearAllText() {
+        text.setText("Hybridization: ");
+    }
+
+    /**
+     * Adds information about selected atom to side panel
+     * @param atom the atom in the scene that is currently selected
+     */
+    private static void updateTextWithAtomInfo(Atom atom) {
+        text.setText(text.getText() + atom.getHybridization());
     }
 }
 

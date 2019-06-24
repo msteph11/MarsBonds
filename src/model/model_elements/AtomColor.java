@@ -8,9 +8,9 @@ import javafx.scene.paint.Color;
  */
 public final class AtomColor {
 
-    public final static Color[] COLORS = {Color.RED, Color.ORANGE, Color.YELLOW,
-                                          Color.GREEN, Color.TEAL, Color.BLUE, Color.HOTPINK,
-                                          Color.PURPLE,};
+    public final static Color[] COLORS = {Color.RED, Color.ORANGE, Color.YELLOW, Color.LAWNGREEN, Color.GREEN,
+                                          Color.TEAL, Color.SKYBLUE, Color.DEEPSKYBLUE, Color.BLUE, Color.BLUEVIOLET,
+                                          Color.MEDIUMPURPLE, Color.LAVENDER, Color.HOTPINK, Color.FUCHSIA};
 
     /**
      * @return The next color an atom will have if the C key is

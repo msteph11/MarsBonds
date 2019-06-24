@@ -3,6 +3,7 @@ package model;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Box;
 import javafx.scene.shape.Sphere;
 import model.model_elements.BondController;
 import model.model_elements.AtomColor;
@@ -27,7 +28,7 @@ public class Atom extends Sphere implements ApplicationObserver {
     /**
      * Constructor: gives atom default hybridization (sp3), a default color (red),
      * and a BondController object
-     * When mouse hovers over atom it is selected, otherwise it isn't
+     * When mouse clicks on atom it is selected, otherwise it isn't
      */
     public Atom() {
         super(RADIUS);
@@ -36,14 +37,15 @@ public class Atom extends Sphere implements ApplicationObserver {
         MarsBonds.addObserver(this);
         selected = false;
         color = AtomColor.COLORS[0];
-        material = new PhongMaterial(color.darker());
+        material = new PhongMaterial(color.brighter());
         setMaterial(material);
-        addEventHandlers();
     }
 
     /**
-     * If the atom is selected and C key was pressed its color changes
-     * If the atom is selected and B key was pressed it gets a new bond
+     * If the atom is selected and C key is pressed its color changes
+     * If the atom is selected and B key is pressed it gets a new bond
+     * If the user clicks on a different atom/elsewhere in the scene, the
+     * atom is no longer selected
      */
     @Override
     public void update(String event) {
@@ -51,14 +53,26 @@ public class Atom extends Sphere implements ApplicationObserver {
             switch(event) {
                 case MarsBonds.C:
                     color = AtomColor.getNextColor(color);
-                    material.setDiffuseColor(color.brighter());
-                    setMaterial(material);
+                    changeMaterial();
                     break;
                 case MarsBonds.B:
                    bondController.addBond();
+                   break;
+                case MarsBonds.DESELECTED:
+                    setSelected(false);
+                    break;
             }
     }
 
+    /**
+     * Setter
+     * NOTE: when atom is selected its color is darker
+     * @param selected if true, atom is selected, else it's not
+     */
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+        changeMaterial();
+    }
     /**
      * Getter
      * @return true if atom is selected, false otherwise
@@ -76,25 +90,14 @@ public class Atom extends Sphere implements ApplicationObserver {
     }
 
     /**
-     * Adds two mouse event handlers to detect when mouse enters atom,
-     * and when mouse exits. Atom is selected when mouse enters, and is not
-     * selected after mouse leaves.
-     *
-     * When an atom is selected, its color is brighter, side panel is
-     * updated with the atom's information
+     * Changes the atom's material so that it has the given color
+     * The color is darker if its selected, brighter if its not
      */
-    private void addEventHandlers() {
-        addEventHandler(MouseEvent.MOUSE_ENTERED, e -> {
-            selected = true;
-            material.setDiffuseColor(material.getDiffuseColor().brighter());
-            setMaterial(material);
-            MarsBonds.updateTextWithAtomInfo(this);
-        });
-        addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-            selected = false;
-            material.setDiffuseColor(material.getDiffuseColor().darker());
-            setMaterial(material);
-            MarsBonds.clearAllText();
-        });
+    private void changeMaterial() {
+        if(selected)
+            material.setDiffuseColor(color.darker());
+        else
+            material.setDiffuseColor(color.brighter());
+        setMaterial(material);
     }
 }
