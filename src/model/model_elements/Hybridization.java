@@ -5,16 +5,22 @@ package model.model_elements;
  * @author Maria Stephenson
  */
 public enum Hybridization {
-    SP3D2("sp³d²"),
-    SP3D("sp³d"),
-    SP3("sp³"),
-    SP2("sp²"),
-    SP("sp");
+    SP3D2("sp³d²", 6),
+    SP3D("sp³d", 5),
+    SP3("sp³", 4),
+    SP2("sp²", 3),
+    SP("sp", 2);
 
     private String name;
+    private int maxBonds;
 
-    Hybridization(String name) {
+    Hybridization(String name, int maxBonds) {
        this.name = name;
+       this.maxBonds = maxBonds;
+    }
+
+    public int getMaxBonds() {
+        return maxBonds;
     }
 
     @Override

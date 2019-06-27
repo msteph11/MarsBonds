@@ -1,9 +1,7 @@
 package model;
 
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
 import javafx.scene.shape.Sphere;
 import model.model_elements.BondController;
 import model.model_elements.AtomColor;
@@ -26,24 +24,28 @@ public class Atom extends Sphere implements ApplicationObserver {
     private Hybridization hybridization;
 
     /**
-     * Constructor: gives atom default hybridization (sp3), a default color (red),
-     * and a BondController object
-     * When mouse clicks on atom it is selected, otherwise it isn't
+     * Constructor: creates an atom that is not the initial atom (has
+     * one bond when it is instantiated)
      */
     public Atom() {
         super(RADIUS);
-        hybridization = Hybridization.SP3;
-        bondController = new BondController(this);
-        MarsBonds.addObserver(this);
-        selected = false;
-        color = AtomColor.COLORS[0];
-        material = new PhongMaterial(color.brighter());
-        setMaterial(material);
+        setUpAtom(false);
     }
 
     /**
+     * Constructor
+     * @param initial if true, the atom being made is the first
+     *                atom in the scene (has no bonds), else atom
+     *                has one bond when it is instantiated
+     */
+    public Atom(boolean initial) {
+        super(RADIUS);
+        setUpAtom(initial);
+    }
+    /**
      * If the atom is selected and C key is pressed its color changes
-     * If the atom is selected and B key is pressed it gets a new bond
+     * If the atom is selected, doesn't have the maximum amount of bonds its
+     * hybridization allows, and B key is pressed it gets a new bond
      * If the user clicks on a different atom/elsewhere in the scene, the
      * atom is no longer selected
      */
@@ -90,7 +92,22 @@ public class Atom extends Sphere implements ApplicationObserver {
     }
 
     /**
-     * Changes the atom's material so that it has the given color
+     * Gives atom default hybridization (sp3), a default color (red),
+     * and a BondController object (controls its bonds).
+     * When mouse clicks on atom it is selected, otherwise it isn't
+     */
+    private void setUpAtom(boolean initial) {
+        hybridization = Hybridization.SP3;
+        bondController = new BondController(this, initial);
+        MarsBonds.addObserver(this);
+        selected = false;
+        color = AtomColor.COLORS[0];
+        material = new PhongMaterial(color.brighter());
+        setMaterial(material);
+    }
+
+    /**
+     * Changes the atom's material so that it has atom's color
      * The color is darker if its selected, brighter if its not
      */
     private void changeMaterial() {

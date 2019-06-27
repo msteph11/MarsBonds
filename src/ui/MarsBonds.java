@@ -1,6 +1,7 @@
 package ui;
 
 import javafx.scene.*;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -31,7 +32,8 @@ public final class MarsBonds extends SubjectApplication {
     private static Scene scene;
     private static RotateGroup root;
     private static PerspectiveCamera camera;
-    private static Text text;
+    private static Text hybridText;
+    private static Button hybridButton;
 
     public static void main( String[] args ) {
         launch(args);
@@ -45,7 +47,7 @@ public final class MarsBonds extends SubjectApplication {
     }
 
     /**
-     * Adds given group to the scene's root
+     * Adds given group to the scene3D's root
      * @param group Group to be added to the scene
      */
     public static void addToScene(Group group){
@@ -57,7 +59,7 @@ public final class MarsBonds extends SubjectApplication {
      * This sub-scene is where all 3D elements will be placed
      */
     private static void setSubScene() {
-        Atom atom = new Atom();
+        Atom atom = new Atom(true);
         root = new RotateGroup();
         root.getChildren().add(atom);
         scene3D = new SubScene(root, WIDTH*3/4, HEIGHT, true, SceneAntialiasing.BALANCED);
@@ -75,10 +77,11 @@ public final class MarsBonds extends SubjectApplication {
         panel.setPrefSize(WIDTH/4, HEIGHT);
         panel.getStyleClass().add("panel");
         borderPane.setRight(panel);
-        text = new Text();
-        text.getStyleClass().add("text");
-        text.setText("Hybridization: ");
-        panel.getChildren().add(text);
+        hybridText = new Text();
+        hybridText.getStyleClass().add("text");
+        hybridText.setText("Hybridization: ");
+        hybridButton = new Button("Change Hybridization");
+        panel.getChildren().addAll(hybridText, hybridButton);
         scene = new Scene(borderPane, WIDTH, HEIGHT, true);
         scene.getStylesheets().add("ui/styling/sidePanel.css");
     }
@@ -113,6 +116,7 @@ public final class MarsBonds extends SubjectApplication {
      * the molecule
      * If C is pressed and an atom is selected, its color changes
      * If B is pressed and an atom is selected, that atom gets a new bond
+     * (depending on whether it already has the max number of bonds it can make)
      * Arrow keys move camera along x and y axis
      */
     private static void addKeyEventHandler() {
@@ -125,10 +129,10 @@ public final class MarsBonds extends SubjectApplication {
                     root.rotateInX(1);
                     break;
                 case A:
-                    root.rotateInZ(-1);
+                    root.rotateInY(-1);
                     break;
                 case D:
-                    root.rotateInZ(1);
+                    root.rotateInY(1);
                     break;
                 case C:
                     notifyObservers(C);
@@ -186,7 +190,7 @@ public final class MarsBonds extends SubjectApplication {
      * Erases any atom information from side panel
      */
     private static void clearAllText() {
-        text.setText("Hybridization: ");
+        hybridText.setText("Hybridization: ");
     }
 
     /**
@@ -194,7 +198,7 @@ public final class MarsBonds extends SubjectApplication {
      * @param atom the atom in the scene that is currently selected
      */
     private static void updateTextWithAtomInfo(Atom atom) {
-        text.setText(text.getText() + atom.getHybridization());
+        hybridText.setText(hybridText.getText() + atom.getHybridization());
     }
 }
 

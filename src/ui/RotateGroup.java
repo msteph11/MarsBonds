@@ -29,11 +29,11 @@ public class RotateGroup extends Group {
     }
 
     /**
-     * Rotates the group along the z-axis according to the given angle
+     * Rotates the group along the y-axis according to the given angle
      * @param angle the amount of degrees the group is rotated
      */
-    public void rotateInZ(int angle) {
-        Rotate newRotation = new Rotate(angle, Rotate.Z_AXIS);
+    public void rotateInY(int angle) {
+        Rotate newRotation = new Rotate(angle, Rotate.Y_AXIS);
         rotateGroup(newRotation);
     }
 

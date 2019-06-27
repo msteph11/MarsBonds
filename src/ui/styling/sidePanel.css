@@ -1,9 +1,14 @@
 .panel {
    -fx-background-color: #707070;
-   -fx-padding: 20;
+   -fx-padding: 20px;
 }
 
 .text {
     -fx-font-family: "Calibri Light";
-    -fx-font-size: 20;
+    -fx-font-size: 20px;
+}
+
+.button {
+    -fx-padding: 15px;
+    -fx-background-insets: 10px 0px 10px 0px;
 }

@@ -1,6 +1,8 @@
 package model.model_elements;
 
 import javafx.scene.Group;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 import model.Atom;
 import model.Bond;
 import ui.MarsBonds;
@@ -11,42 +13,41 @@ import ui.MarsBonds;
  */
 public class BondController {
 
+    private static final int BOND_OFFSET = 5;
+    private static final int ATOM_OFFSET = 40;
+
     private Atom atom;
     private int bonds;
 
     /**
-     * Contstructor
-     * Makes a new BondController for given atom with no bonds to control
+     * Constructor
+     * Makes a new BondController for given atom with either no bonds to control
+     * (if it is the initial atom) or one bond to control (if it is not the initial atom)
      * @param atom The atom whose bonds this BondController controls
+     * @param initial Whether the atom is the initial one or not
      */
-    public BondController(Atom atom) {
-        bonds = 0;
+    public BondController(Atom atom, boolean initial) {
+        bonds = initial? 0 : 1;
         this.atom = atom;
     }
 
-
     /**
-     * Adds another bond to the atom (if hybridization is sp3 - other hybridizations
+     * If the atom has less then the max number of bonds its hybridization allows,
+     * adds another bond to the atom (if hybridization is sp3 - other hybridizations
      * are yet to be implemented)
      */
     public void addBond() {
-        switch (atom.getHybridization()) {
-            case SP:
-                System.out.println("To be implemented");
-                break;
-            case SP2:
-                System.out.println("To be implemented");
-                break;
-            case SP3:
-                addBondSP3();
-                break;
-            case SP3D:
-                System.out.println("To be implemented");
-                break;
-            case SP3D2:
-                System.out.println("To be implemented");
-                break;
-            }
+        Hybridization atomHybrid = atom.getHybridization();
+        if (atomHybrid.equals(Hybridization.SP) && bonds < Hybridization.SP.getMaxBonds())
+            System.out.println("To be implemented");
+        else if (atomHybrid.equals(Hybridization.SP2) && bonds < Hybridization.SP2.getMaxBonds())
+            System.out.println("To be implemented");
+        else if (atomHybrid.equals(Hybridization.SP3) && bonds < Hybridization.SP3.getMaxBonds())
+            addBondSP3();
+        else if (atomHybrid.equals(Hybridization.SP3D) && bonds < Hybridization.SP3D.getMaxBonds())
+                  System.out.println("To be implemented");
+        else if (atomHybrid.equals(Hybridization.SP3D2) && bonds < Hybridization.SP3D2.getMaxBonds())
+            System.out.println("To be implemented");
     }
 
     /**
@@ -55,16 +56,22 @@ public class BondController {
     private void addBondSP3() {
         Atom newAtom = new Atom();
         Bond bond = new Bond();
+        newAtom.getTransforms().addAll(atom.getTransforms());
+        bond.getTransforms().addAll(atom.getTransforms());
+        bond.getTransforms().add(new Translate(0, -(Bond.BOND_LENGTH + BOND_OFFSET), 0));
+        newAtom.getTransforms().add(new Translate(0, -(Bond.BOND_LENGTH + ATOM_OFFSET), 0));
         Group group = new Group();
-        bond.setTranslateY(atom.getTranslateY() - (Bond.BOND_LENGTH + 5));
-        bond.setTranslateX(atom.getTranslateX());
-        bond.setTranslateZ(atom.getTranslateZ());
-        newAtom.setTranslateX(atom.getTranslateX());
-        newAtom.setTranslateY(atom.getTranslateY() - 40 - Bond.BOND_LENGTH);
-        newAtom.setTranslateZ(atom.getTranslateZ());
-        MarsBonds.addObserver(newAtom);
         group.getChildren().add(bond);
         group.getChildren().add(newAtom);
+        if (bonds > 0) {
+            Rotate rotateZ = new Rotate(-109.5, Rotate.Z_AXIS);
+            Rotate rotateY = new Rotate(-109.5 * (bonds - 1), Rotate.Y_AXIS);
+            group.getTransforms().addAll(rotateY, rotateZ);
+        }
+        addBondToScene(group);
+    }
+
+    private void addBondToScene(Group group) {
         bonds++;
         MarsBonds.addToScene(group);
     }
