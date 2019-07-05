@@ -112,7 +112,7 @@ public final class MarsBonds extends SubjectApplication {
 
     /**
      * Adds KeyEvent handler to primary stage
-     * The KeyEvent handler uses input from the WASD keys to rotate
+     * The KeyEvent handler uses input from the WASDEQ keys to rotate
      * the molecule
      * If C is pressed and an atom is selected, its color changes
      * If B is pressed and an atom is selected, that atom gets a new bond
@@ -122,10 +122,10 @@ public final class MarsBonds extends SubjectApplication {
     private static void addKeyEventHandler() {
         primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
             switch(e.getCode()) {
-                case W:
+                case Q:
                     root.rotateInX(-1);
                     break;
-                case S:
+                case E:
                     root.rotateInX(1);
                     break;
                 case A:
@@ -133,6 +133,12 @@ public final class MarsBonds extends SubjectApplication {
                     break;
                 case D:
                     root.rotateInY(1);
+                    break;
+                case W:
+                    root.rotateInZ(1);
+                    break;
+                case S:
+                    root.rotateInZ(-1);
                     break;
                 case C:
                     notifyObservers(C);

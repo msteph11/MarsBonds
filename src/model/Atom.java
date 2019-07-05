@@ -22,6 +22,7 @@ public class Atom extends Sphere implements ApplicationObserver {
     private boolean selected;
     private Color color;
     private Hybridization hybridization;
+    private boolean initial;
 
     /**
      * Constructor: creates an atom that is not the initial atom (has
@@ -30,6 +31,7 @@ public class Atom extends Sphere implements ApplicationObserver {
     public Atom() {
         super(RADIUS);
         setUpAtom(false);
+        initial = false;
     }
 
     /**
@@ -41,6 +43,7 @@ public class Atom extends Sphere implements ApplicationObserver {
     public Atom(boolean initial) {
         super(RADIUS);
         setUpAtom(initial);
+        this.initial = initial;
     }
     /**
      * If the atom is selected and C key is pressed its color changes
@@ -89,6 +92,10 @@ public class Atom extends Sphere implements ApplicationObserver {
      */
     public Hybridization getHybridization() {
         return hybridization;
+    }
+
+    public boolean isInitial() {
+        return initial;
     }
 
     /**

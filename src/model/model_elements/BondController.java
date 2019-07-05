@@ -19,6 +19,14 @@ public class BondController {
     private Atom atom;
     private int bonds;
 
+    // the pivots for the rotations that will be applied to a new atom and bond
+    private double atomPivotX = 0;
+    private double atomPivotY = 2 * Atom.RADIUS + Bond.BOND_LENGTH;
+    private double atomPivotZ = 0;
+    private double bondPivotX = 0;
+    private double bondPivotY = Atom.RADIUS + Bond.BOND_LENGTH/2;
+    private double bondPivotZ = 0;
+
     /**
      * Constructor
      * Makes a new BondController for given atom with either no bonds to control
@@ -54,25 +62,65 @@ public class BondController {
      * Adds a bond to an atom with sp3 hybridization
      */
     private void addBondSP3() {
+
+        // sets up the new atom and bond above the bond controller's atom, in the vertical position
         Atom newAtom = new Atom();
         Bond bond = new Bond();
         newAtom.getTransforms().addAll(atom.getTransforms());
         bond.getTransforms().addAll(atom.getTransforms());
         bond.getTransforms().add(new Translate(0, -(Bond.BOND_LENGTH + BOND_OFFSET), 0));
         newAtom.getTransforms().add(new Translate(0, -(Bond.BOND_LENGTH + ATOM_OFFSET), 0));
+
+        if (bonds > 0 && atom.isInitial()) {
+            add3MoreBondsSP3InitialAtom(newAtom, bond);
+        } else if (bonds > 0) {
+            add3MoreBondsSP3(newAtom, bond);
+        }
+
         Group group = new Group();
         group.getChildren().add(bond);
         group.getChildren().add(newAtom);
-        if (bonds > 0) {
-            Rotate rotateZ = new Rotate(-109.5, Rotate.Z_AXIS);
-            Rotate rotateY = new Rotate(-109.5 * (bonds - 1), Rotate.Y_AXIS);
-            group.getTransforms().addAll(rotateY, rotateZ);
-        }
         addBondToScene(group);
     }
 
     private void addBondToScene(Group group) {
         bonds++;
         MarsBonds.addToScene(group);
+    }
+
+    /**
+     * Adds one of the 3 bonds yet to be added to the initial atom in the screen, if
+     * that atom has SP3 hybridization, and a bond already
+     */
+    private void add3MoreBondsSP3InitialAtom(Atom newAtom, Bond bond) {
+        Rotate atomRotateZ = new Rotate(-109.5, atomPivotX, atomPivotY, atomPivotZ, Rotate.Z_AXIS);
+        Rotate atomRotateY = new Rotate(-109.5 * (bonds - 1), atomPivotX, atomPivotY, atomPivotZ, Rotate.Y_AXIS);
+        Rotate bondRotateZ = new Rotate(-109.5, bondPivotX, bondPivotY, bondPivotZ, Rotate.Z_AXIS);
+        Rotate bondRotateY = new Rotate(-109.5 * (bonds - 1), bondPivotX, bondPivotY, bondPivotZ, Rotate.Y_AXIS);
+        newAtom.getTransforms().addAll(atomRotateY, atomRotateZ);
+        bond.getTransforms().addAll(bondRotateY, bondRotateZ);
+    }
+
+    /**
+     * Adds one of the 3 bonds yet to be added to an atom in the screen, if
+     * that atom has SP3 hybridization, and a bond already
+     */
+    private void add3MoreBondsSP3(Atom newAtom, Bond bond) {
+        Rotate atomRotateZ = new Rotate(-70.5, atomPivotX, atomPivotY, atomPivotZ, Rotate.Z_AXIS);
+        Rotate atomRotateX = new Rotate(bonds > 1? -109.5 : 0, atomPivotX, atomPivotY, atomPivotZ, Rotate.X_AXIS);
+        Rotate bondRotateZ = new Rotate(-70.5, bondPivotX, bondPivotY, bondPivotZ, Rotate.Z_AXIS);
+        Rotate bondRotateX = new Rotate(bonds > 1? -109.5 : 0, bondPivotX, bondPivotY, bondPivotZ, Rotate.X_AXIS);
+        newAtom.getTransforms().addAll(atomRotateZ,  atomRotateX);
+        bond.getTransforms().addAll(bondRotateZ,  bondRotateX);
+
+        // adding the last bond requires more rotations
+        if (bonds > 2) {
+            Rotate atomRotateY = new Rotate( 109.5, atomPivotX, atomPivotY, atomPivotZ, Rotate.Z_AXIS);
+            Rotate atomRotateX2 = new Rotate(-23.725, atomPivotX, atomPivotY, atomPivotZ, Rotate.X_AXIS);
+            Rotate bondRotateY = new Rotate(109.5, bondPivotX, bondPivotY, bondPivotZ, Rotate.Z_AXIS);
+            Rotate bondRotateX2 = new Rotate(-23.725, bondPivotX, bondPivotY, bondPivotZ,  Rotate.X_AXIS);
+            newAtom.getTransforms().addAll(atomRotateY, atomRotateX2);
+            bond.getTransforms().addAll(bondRotateY, bondRotateX2);
+        }
     }
 }
