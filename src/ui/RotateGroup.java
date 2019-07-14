@@ -1,6 +1,7 @@
 package ui;
 
 import javafx.scene.Group;
+import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 
@@ -24,8 +25,12 @@ public class RotateGroup extends Group {
      * @param angle the amount of degrees the group is rotated
      */
     public void rotateInX(int angle) {
-       Rotate newRotation = new Rotate(angle, Rotate.X_AXIS);
-       rotateGroup(newRotation);
+        try {
+            Rotate newRotation = new Rotate(angle, currTransform.inverseDeltaTransform(Rotate.X_AXIS));
+            rotateGroup(newRotation);
+        } catch (NonInvertibleTransformException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -33,8 +38,12 @@ public class RotateGroup extends Group {
      * @param angle the amount of degrees the group is rotated
      */
     public void rotateInY(int angle) {
-        Rotate newRotation = new Rotate(angle, Rotate.Y_AXIS);
-        rotateGroup(newRotation);
+        try {
+            Rotate newRotation = new Rotate(angle, currTransform.inverseDeltaTransform(Rotate.Y_AXIS));
+            rotateGroup(newRotation);
+        } catch (NonInvertibleTransformException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -42,8 +51,12 @@ public class RotateGroup extends Group {
      * @param angle the amount of degrees the group is rotated
      */
     public void rotateInZ(int angle) {
-        Rotate newRotation = new Rotate(angle, Rotate.Z_AXIS);
-        rotateGroup(newRotation);
+        try {
+            Rotate newRotation = new Rotate(angle, currTransform.inverseDeltaTransform(Rotate.Z_AXIS));
+            rotateGroup(newRotation);
+        } catch (NonInvertibleTransformException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

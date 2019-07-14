@@ -128,23 +128,23 @@ public final class MarsBonds extends SubjectApplication {
     private static void addKeyEventHandler() {
         primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
             switch(e.getCode()) {
-                case Q:
-                    root.rotateInX(-1);
-                    break;
-                case E:
-                    root.rotateInX(1);
-                    break;
                 case A:
-                    root.rotateInY(-1);
-                    break;
-                case D:
                     root.rotateInY(1);
                     break;
+                case D:
+                    root.rotateInY(-1);
+                    break;
                 case W:
-                    root.rotateInZ(1);
+                    root.rotateInX(-1);
                     break;
                 case S:
+                    root.rotateInX(1);
+                    break;
+                case Q:
                     root.rotateInZ(-1);
+                    break;
+                case E:
+                    root.rotateInZ(1);
                     break;
                 case C:
                     notifyObservers(C);
@@ -184,7 +184,7 @@ public final class MarsBonds extends SubjectApplication {
                 Atom atomResult = (Atom) result;
                 atomResult.setSelected(true);
                 currSelectedAtom = atomResult;
-                sidePanel.updateTextWithAtomInfo();
+                SidePanel.updateTextWithAtomInfo();
             }
         });
     }
@@ -194,9 +194,7 @@ public final class MarsBonds extends SubjectApplication {
      * User can scroll to zoom in/out
      */
     private static void addScrollEventHandler() {
-        primaryStage.addEventHandler(ScrollEvent.SCROLL, e -> {
-            camera.setTranslateZ(camera.getTranslateZ() + e.getDeltaY());
-        });
+        primaryStage.addEventHandler(ScrollEvent.SCROLL, e -> camera.setTranslateZ(camera.getTranslateZ() + e.getDeltaY()));
     }
 }
 

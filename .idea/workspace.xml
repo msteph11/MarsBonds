@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a2b9468b-c5ec-4b02-a418-623a2a26ea4c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ui/SidePanel.java" afterDir="false" />
+    <list default="true" id="a2b9468b-c5ec-4b02-a418-623a2a26ea4c" name="Default Changelist" comment="No longer rotates rotational axis when rotating molecule">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Atom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Atom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/model_elements/AtomColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/model_elements/AtomColor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/model_elements/BondController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/model_elements/BondController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/observers/ApplicationObserver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/observers/ApplicationObserver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/observers/SubjectApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/observers/SubjectApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/MarsBonds.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/MarsBonds.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/styling/sidePanel.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/styling/sidePanel.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/RotateGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/RotateGroup.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,8 +31,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ui/MarsBonds.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="60" column="53" selection-start-line="60" selection-start-column="53" selection-end-line="60" selection-end-column="53" />
+            <state relative-caret-position="384">
+              <caret line="199" lean-forward="true" selection-start-line="199" selection-end-line="199" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -70,10 +64,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ui/RotateGroup.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="434">
-              <caret line="42" column="7" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
+            <state relative-caret-position="173">
+              <caret line="52" column="4" selection-start-line="52" selection-start-column="4" selection-end-line="52" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#414#415#0" expanded="true" />
+                <element signature="e#458#459#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -185,7 +181,6 @@
         <option value="$PROJECT_DIR$/src/ui/RotateCamera.java" />
         <option value="$PROJECT_DIR$/src/model/model_elements/Hybridization.java" />
         <option value="$PROJECT_DIR$/src/model/Bond.java" />
-        <option value="$PROJECT_DIR$/src/ui/RotateGroup.java" />
         <option value="$PROJECT_DIR$/src/exceptions/AtomHasMoreThan2Bonds.java" />
         <option value="$PROJECT_DIR$/src/ui/styling/sidePanel.css" />
         <option value="$PROJECT_DIR$/src/model/model_elements/BondController.java" />
@@ -194,6 +189,7 @@
         <option value="$PROJECT_DIR$/src/observers/SubjectApplication.java" />
         <option value="$PROJECT_DIR$/src/model/Atom.java" />
         <option value="$PROJECT_DIR$/src/ui/SidePanel.java" />
+        <option value="$PROJECT_DIR$/src/ui/RotateGroup.java" />
         <option value="$PROJECT_DIR$/src/ui/MarsBonds.java" />
       </list>
     </option>
@@ -231,27 +227,7 @@
               <item name="MarsBonds" type="b2602c69:ProjectViewProjectNode" />
               <item name="MarsBonds" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="model_elements" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MarsBonds" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MarsBonds" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="observers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MarsBonds" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MarsBonds" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ui" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MarsBonds" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MarsBonds" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="styling" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MarsBonds" type="b2602c69:ProjectViewProjectNode" />
@@ -391,7 +367,14 @@
       <option name="project" value="LOCAL" />
       <updated>1562357178543</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Now can make all molecules (!rings) with all hybridizations&#10;Can change atom's hybridization using drop menu">
+      <created>1563130853003</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1563130853004</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TodoView">
@@ -407,23 +390,23 @@
     <frame x="-6" y="-6" width="1513" height="973" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1563981" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1563981" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Learn" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32977462" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.30723608" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.30723608" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39976275" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32977462" />
       <window_info anchor="bottom" id="CheckStyle" order="7" weight="0.32977462" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32977462" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.23606168" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.3262159" />
+      <window_info active="true" anchor="bottom" id="Messages" order="11" visible="true" weight="0.3262159" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -480,7 +463,9 @@
     <MESSAGE value="Added 2D panel displaying atom's info, general refactoring" />
     <MESSAGE value="Updated camera control, now molecule rotates instead of cam, now clicking selects atoms - not hovering over them" />
     <MESSAGE value="Updated so can now make carbon chains" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated so can now make carbon chains" />
+    <MESSAGE value="Now can make all molecules (!rings) with all hybridizations&#10;Can change atom's hybridization using drop menu" />
+    <MESSAGE value="No longer rotates rotational axis when rotating molecule" />
+    <option name="LAST_COMMIT_MESSAGE" value="No longer rotates rotational axis when rotating molecule" />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://$PROJECT_DIR$/../JOGLNativeJARs/jogl-all-2.0.2.jar!/javax/media/opengl/fixedfunc/GLMatrixFunc.class" />
@@ -619,18 +604,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ui/RotateGroup.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="434">
-          <caret line="42" column="7" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
+        <state relative-caret-position="173">
+          <caret line="52" column="4" selection-start-line="52" selection-start-column="4" selection-end-line="52" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#414#415#0" expanded="true" />
+            <element signature="e#458#459#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ui/MarsBonds.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="60" column="53" selection-start-line="60" selection-start-column="53" selection-end-line="60" selection-end-column="53" />
+        <state relative-caret-position="384">
+          <caret line="199" lean-forward="true" selection-start-line="199" selection-end-line="199" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
