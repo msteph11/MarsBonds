@@ -8,6 +8,7 @@ import model.model_elements.AtomColor;
 import model.model_elements.Hybridization;
 import observers.ApplicationObserver;
 import ui.MarsBonds;
+import ui.SidePanel;
 
 
 /**
@@ -30,8 +31,8 @@ public class Atom extends Sphere implements ApplicationObserver {
      */
     public Atom() {
         super(RADIUS);
-        setUpAtom(false);
         initial = false;
+        setUpAtom();
     }
 
     /**
@@ -42,8 +43,8 @@ public class Atom extends Sphere implements ApplicationObserver {
      */
     public Atom(boolean initial) {
         super(RADIUS);
-        setUpAtom(initial);
         this.initial = initial;
+        setUpAtom();
     }
     /**
      * If the atom is selected and C key is pressed its color changes
@@ -78,34 +79,40 @@ public class Atom extends Sphere implements ApplicationObserver {
         this.selected = selected;
         changeMaterial();
     }
-    /**
-     * Getter
-     * @return true if atom is selected, false otherwise
-     */
+
     public boolean isSelected() {
         return selected;
     }
 
-    /**
-     * Getter
-     * @return atom's hybridization
-     */
     public Hybridization getHybridization() {
         return hybridization;
     }
 
+    /**
+     * @return true if atom was first one in the scene (initially had no
+     *         bonds), false otherwise
+     */
     public boolean isInitial() {
         return initial;
     }
 
+    public BondController getBondController() {
+        return bondController;
+    }
+
+    public void setHybridization(Hybridization hybridization) {
+        this.hybridization = hybridization;
+        SidePanel.clearAllText();
+        SidePanel.updateTextWithAtomInfo();
+    }
     /**
      * Gives atom default hybridization (sp3), a default color (red),
      * and a BondController object (controls its bonds).
      * When mouse clicks on atom it is selected, otherwise it isn't
      */
-    private void setUpAtom(boolean initial) {
+    private void setUpAtom() {
         hybridization = Hybridization.SP3;
-        bondController = new BondController(this, initial);
+        bondController = new BondController(this);
         MarsBonds.addObserver(this);
         selected = false;
         color = AtomColor.COLORS[0];

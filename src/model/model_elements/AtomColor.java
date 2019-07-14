@@ -13,8 +13,7 @@ public final class AtomColor {
                                           Color.MEDIUMPURPLE, Color.LAVENDER, Color.HOTPINK, Color.FUCHSIA};
 
     /**
-     * @return The next color an atom will have if the C key is
-     * pressed and its selected
+     * @return The next color an atom with given color can have
      * @param c the color the atom currently has
      */
     public static Color getNextColor(Color c) {

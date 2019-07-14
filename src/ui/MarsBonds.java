@@ -1,13 +1,11 @@
 package ui;
 
 import javafx.scene.*;
-import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Atom;
 import observers.SubjectApplication;
@@ -19,8 +17,8 @@ import observers.SubjectApplication;
  */
 public final class MarsBonds extends SubjectApplication {
 
-    private static final int WIDTH = 1000;
-    private static final int HEIGHT = 800;
+    public static final int WIDTH = 1000;
+    public static final int HEIGHT = 800;
     private static final Color SCENE_COLOR = Color.LIGHTGREY;
     private static final int CAM_SPEED = 10;
     public static final String C = "C key";
@@ -29,17 +27,18 @@ public final class MarsBonds extends SubjectApplication {
 
     private static Stage primaryStage;
     private static SubScene scene3D;
+    private static SidePanel sidePanel;
     private static Scene scene;
     private static RotateGroup root;
     private static PerspectiveCamera camera;
-    private static Text hybridText;
-    private static Button hybridButton;
+    private static Atom currSelectedAtom;
 
     public static void main( String[] args ) {
         launch(args);
     }
 
     public void start(Stage primaryStage){
+        setSidePanel();
         setSubScene();
         setScene();
         setCamera();
@@ -54,12 +53,25 @@ public final class MarsBonds extends SubjectApplication {
         root.getChildren().add(group);
     }
 
+    public static Atom getCurrSelectedAtom() {
+        return currSelectedAtom;
+    }
+
     /**
-     * Creates sub-scene with molecule in center of screen
+     * Creates the side panel, adds it as an observer
+     */
+    private static void setSidePanel() {
+        sidePanel =  new SidePanel();
+        addObserver(sidePanel);
+    }
+
+    /**
+     * Creates sub-scene with a single unselected atom in it
      * This sub-scene is where all 3D elements will be placed
      */
     private static void setSubScene() {
         Atom atom = new Atom(true);
+        currSelectedAtom = null;
         root = new RotateGroup();
         root.getChildren().add(atom);
         scene3D = new SubScene(root, WIDTH*3/4, HEIGHT, true, SceneAntialiasing.BALANCED);
@@ -73,17 +85,8 @@ public final class MarsBonds extends SubjectApplication {
     private static void setScene() {
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(scene3D);
-        VBox panel =  new VBox();
-        panel.setPrefSize(WIDTH/4, HEIGHT);
-        panel.getStyleClass().add("panel");
-        borderPane.setRight(panel);
-        hybridText = new Text();
-        hybridText.getStyleClass().add("text");
-        hybridText.setText("Hybridization: ");
-        hybridButton = new Button("Change Hybridization");
-        panel.getChildren().addAll(hybridText, hybridButton);
+        borderPane.setRight(sidePanel);
         scene = new Scene(borderPane, WIDTH, HEIGHT, true);
-        scene.getStylesheets().add("ui/styling/sidePanel.css");
     }
     /**
      * Initializes camera and adds to scene
@@ -115,8 +118,11 @@ public final class MarsBonds extends SubjectApplication {
      * The KeyEvent handler uses input from the WASDEQ keys to rotate
      * the molecule
      * If C is pressed and an atom is selected, its color changes
-     * If B is pressed and an atom is selected, that atom gets a new bond
-     * (depending on whether it already has the max number of bonds it can make)
+     * If B is pressed and an atom is selected,
+     *  - that atom gets a new bond (depending on whether it already has the
+     *    max number of bonds)
+     *  - hybridization drop menu will be disabled if it was before enabled, and the selected
+     *    atom gets a second bond
      * Arrow keys move camera along x and y axis
      */
     private static void addKeyEventHandler() {
@@ -165,19 +171,20 @@ public final class MarsBonds extends SubjectApplication {
     /**
      * Adds MouseEvent handler to primary stage
      * If an atom is clicked on it is selected and the side panel is
-     * updated with its information. When the side panel/empty space around the
-     * molecule is clicked all atoms are deselected. Only one atom can be selected
-     * at a time.
+     * updated with its information. When the side panel (not its buttons + drop menus)/
+     * empty space around the molecule is clicked all atoms are deselected.
+     * Only one atom can be selected at a time.
      */
     private static void addMouseEventHandler() {
         primaryStage.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             Object result = e.getPickResult().getIntersectedNode();
+            currSelectedAtom = null;
             notifyObservers(DESELECTED);
-            clearAllText();
             if (result instanceof Atom) {
                 Atom atomResult = (Atom) result;
                 atomResult.setSelected(true);
-                updateTextWithAtomInfo(atomResult);
+                currSelectedAtom = atomResult;
+                sidePanel.updateTextWithAtomInfo();
             }
         });
     }
@@ -190,21 +197,6 @@ public final class MarsBonds extends SubjectApplication {
         primaryStage.addEventHandler(ScrollEvent.SCROLL, e -> {
             camera.setTranslateZ(camera.getTranslateZ() + e.getDeltaY());
         });
-    }
-
-    /**
-     * Erases any atom information from side panel
-     */
-    private static void clearAllText() {
-        hybridText.setText("Hybridization: ");
-    }
-
-    /**
-     * Adds information about selected atom to side panel
-     * @param atom the atom in the scene that is currently selected
-     */
-    private static void updateTextWithAtomInfo(Atom atom) {
-        hybridText.setText(hybridText.getText() + atom.getHybridization());
     }
 }
 

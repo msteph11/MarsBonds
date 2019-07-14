@@ -7,8 +7,5 @@ package observers;
  */
 public interface ApplicationObserver {
 
-    /**
-     * This method is called when the SubjectApplication notifies its observers
-     */
     void update(String event);
 }
